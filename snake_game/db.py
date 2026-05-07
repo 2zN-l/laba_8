@@ -1,5 +1,4 @@
 import sqlite3
-import os
 
 class StatsDatabase:
     def __init__(self, db_path="snake_stats.db"):
@@ -18,7 +17,6 @@ class StatsDatabase:
                     )
                 """)
                 conn.commit()
-                print(f"База данных подключена: {self.db_path}")
         except Exception as e:
             print(f"Ошибка БД: {e}")
 

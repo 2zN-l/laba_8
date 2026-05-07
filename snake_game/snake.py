@@ -39,7 +39,6 @@ class Snake:
         return self.head in self.body[1:]
     
     def draw(self, screen):
-        # Рисуем тело змейки
         for segment in self.body:
             rect = pygame.Rect(
                 segment[0] * self.cell_size,
@@ -50,7 +49,7 @@ class Snake:
             pygame.draw.rect(screen, (0, 150, 0), rect)
             pygame.draw.rect(screen, (0, 200, 0), rect, 2)
         
-        # Рисуем голову
+
         head_rect = pygame.Rect(
             self.head[0] * self.cell_size,
             self.head[1] * self.cell_size,
@@ -59,10 +58,9 @@ class Snake:
         )
         pygame.draw.rect(screen, (0, 200, 0), head_rect)
         
-        # ========== ГЛАЗКИ ==========
         eye_size = max(3, self.cell_size // 6)
         
-        # Определяем положение глаз в зависимости от направления
+
         if self.direction == self.RIGHT:
             eye1 = (head_rect.x + head_rect.width - eye_size, head_rect.y + eye_size)
             eye2 = (head_rect.x + head_rect.width - eye_size, head_rect.y + head_rect.height - eye_size*2)

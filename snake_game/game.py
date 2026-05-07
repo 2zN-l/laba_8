@@ -3,7 +3,7 @@ import sys
 import time
 from .snake import Snake
 from .food import Food
-from .exceptions import SnakeCollisionError, InvalidDirectionError
+from .exceptions import InvalidDirectionError
 from .db import StatsDatabase
 
 class SnakeGame:
@@ -83,18 +83,15 @@ class SnakeGame:
     def _update(self):
         self.snake.move()
         
-        # Проверка столкновения со стенами
         head = self.snake.head
         if head[0] < 0 or head[0] >= self.width_cells or head[1] < 0 or head[1] >= self.height_cells:
             self._game_over()
             return
         
-        # Проверка столкновения с собой
         if self.snake.check_self_collision():
             self._game_over()
             return
         
-        # Проверка поедания еды
         if self.snake.head == self.food.position:
             self.snake.grow()
             self.score += 10
@@ -105,7 +102,7 @@ class SnakeGame:
     
     def _game_over(self):
         try:
-            # Сохраняем статистику
+
             duration = time.time() - self.game_start_time
             self.db.save_game(self.score, round(duration, 2))
         except Exception as e:
@@ -116,7 +113,6 @@ class SnakeGame:
     def _draw(self):
         self.screen.fill((0, 0, 0))
         
-        # Сетка
         for x in range(0, self.width, self.cell_size):
             pygame.draw.line(self.screen, (40, 40, 40), (x, 0), (x, self.height))
         for y in range(0, self.height, self.cell_size):
@@ -125,13 +121,11 @@ class SnakeGame:
         self.snake.draw(self.screen)
         self.food.draw(self.screen)
         
-        # Счёт
         score_text = self.font.render(f"Счёт: {self.score}", True, (255, 255, 255))
         self.screen.blit(score_text, (10, 10))
         high_text = self.small_font.render(f"Рекорд: {self.high_score}", True, (200, 200, 200))
         self.screen.blit(high_text, (10, 50))
         
-        # Экран окончания игры
         if not self.running:
             overlay = pygame.Surface((self.width, self.height))
             overlay.set_alpha(200)
@@ -158,7 +152,6 @@ class SnakeGame:
             self._draw()
             self.clock.tick(10)
         
-        # Ждём действия после окончания игры
         waiting = True
         while waiting:
             for event in pygame.event.get():
@@ -174,7 +167,6 @@ class SnakeGame:
                         sys.exit()
     
     def restart(self):
-        # Полностью пересоздаём игру
         self._init_game_objects()
         self.running = True
         self.run()

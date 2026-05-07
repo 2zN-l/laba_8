@@ -4,7 +4,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from fastapi import FastAPI
-from fastapi.responses import HTMLResponse  # ← ДОБАВИТЬ ЭТОТ ИМПОРТ
+from fastapi.responses import HTMLResponse
 from snake_game.db import StatsDatabase
 
 app = FastAPI(title="Змейка - Статистика")
@@ -12,8 +12,7 @@ app = FastAPI(title="Змейка - Статистика")
 db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "snake_stats.db")
 db = StatsDatabase(db_path)
 
-# Главная страница
-@app.get("/", response_class=HTMLResponse)  # ← ДОБАВИТЬ
+@app.get("/", response_class=HTMLResponse)
 def index():
     return """
     <!DOCTYPE html>
@@ -29,8 +28,8 @@ def index():
     </html>
     """
 
-# Страница со списком игр
-@app.get("/games", response_class=HTMLResponse)  # ← ДОБАВИТЬ
+
+@app.get("/games", response_class=HTMLResponse)
 def games():
     games_data = db.get_top_scores(limit=20)
     
@@ -64,8 +63,8 @@ def games():
     """
     return html
 
-# Страница со статистикой
-@app.get("/stats", response_class=HTMLResponse)  # ← ДОБАВИТЬ
+
+@app.get("/stats", response_class=HTMLResponse)
 def stats():
     stats_data = db.get_stats()
     
